@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OWEN SHOES – Premium Footwear Store. Toko sepatu online modern untuk pria dan wanita: Sneakers, Running Shoes, Casual Shoes, Slip-On, dan Formal Shoes.">
+  <!-- Content Security Policy ketat tanpa unsafe-eval dan tanpa wildcard (*) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>OWEN SHOES – Premium Footwear Store</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Static Tailwind CSS (Aman untuk CSP ketat tanpa unsafe-eval) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       DESIGN TOKENS & CUSTOM STYLING (60% #111111, 30% #FFFFFF, 10% #FF6B00)
+       ========================================================= */
+    :root {
+      --bg-primary: #111111;
+      --bg-surface: #1A1A1A;
+      --bg-elevated: #262626;
+      --text-primary: #FFFFFF;
+      --text-muted: #A3A3A3;
+      --accent-orange: #FF6B00;
+      --accent-orange-hover: #E55E00;
+      --border-subtle: rgba(255, 255, 255, 0.09);
+    }
+
+    html, body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    .bg-brand-black { background-color: var(--bg-primary); }
+    .bg-brand-surface { background-color: var(--bg-surface); }
+    .bg-brand-elevated { background-color: var(--bg-elevated); }
+    .text-brand-orange { color: var(--accent-orange); }
+    .bg-brand-orange { background-color: var(--accent-orange); }
+    .bg-brand-orange:hover { background-color: var(--accent-orange-hover); }
+    .border-brand-subtle { border-color: var(--border-subtle); }
+    .border-brand-orange { border-color: var(--accent-orange); }
+
+    /* Navbar glass effect */
+    .navbar-glass {
+      background-color: rgba(17, 17, 17, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* Product & category card animations */
+    .shoe-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.28s ease;
+    }
+    .shoe-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 107, 0, 0.55);
+      box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.65);
+    }
+    .shoe-card img {
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .shoe-card:hover img {
+      transform: scale(1.06);
+    }
+
+    /* Pill & button active states */
+    .pill-active {
+      background-color: var(--accent-orange) !important;
+      color: #FFFFFF !important;
+      border-color: var(--accent-orange) !important;
+    }
+
+    .size-btn {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: #FFFFFF;
+      transition: all 0.2s ease;
+    }
+    .size-btn:hover {
+      border-color: var(--accent-orange);
+    }
+    .size-btn.selected {
+      background-color: var(--accent-orange);
+      border-color: var(--accent-orange);
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    .color-swatch {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .color-swatch.selected {
+      transform: scale(1.12);
+      box-shadow: 0 0 0 2px #1A1A1A, 0 0 0 4px #FF6B00;
+    }
+
+    /* Hero subtle radial glow */
+    .hero-glow {
+      background: radial-gradient(circle at 75% 45%, rgba(255, 107, 0, 0.18) 0%, rgba(17, 17, 17, 0) 60%);
+    }
+
+    /* Modal & Drawer backdrop transitions */
+    .overlay-backdrop {
+      background-color: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2E2E2E;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF6B00;
+    }
+
+    /* Toast slide-in animation */
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .toast-enter {
+      animation: toastIn 0.25s ease-out forwards;
+    }
+
+    /* Focus ring accessibility */
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--accent-orange);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-brand-black text-white min-h-screen flex flex-col">
+
+  <!-- ==================== 1. STICKY RESPONSIVE NAVBAR ==================== -->
+  <header class="sticky top-0 z-40 navbar-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <!-- Brand Logo -->
+        <a href="#home" class="flex items-center space-x-2.5 group" aria-label="OWEN SHOES Beranda">
+          <span class="w-9 h-9 rounded-xl bg-brand-orange flex items-center justify-center font-display font-extrabold text-white text-lg shadow-lg">O</span>
+          <div class="leading-tight">
+            <span class="block font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">OWEN <span class="text-brand-orange">SHOES</span></span>
+            <span class="block text-xs text-gray-400 tracking-widest uppercase" style="font-size: 0.62rem;">Premium Footwear</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium" aria-label="Navigasi Utama">
+          <a href="#home" class="text-gray-200 hover:text-brand-orange transition-colors py-2">Home</a>
+          <a href="#katalog" class="text-gray-200 hover:text-brand-orange transition-colors py-2">Katalog</a>
+          <a href="#kategori" class="text-gray-200 hover:text-brand-orange transition-colors py-2">Kategori</a>
+          <a href="#tentang" class="text-gray-200 hover:text-brand-orange transition-colors py-2">Tentang Kami</a>
+          <a href="#kontak" class="text-gray-200 hover:text-brand-orange transition-colors py-2">Kontak</a>
+        </nav>
+
+        <!-- Action Buttons: Cart & Mobile Menu -->
+        <div class="flex items-center space-x-3">
+          <button id="open-cart-btn" type="button" class="relative inline-flex items-center justify-center p-2.5 rounded-xl bg-brand-elevated border border-brand-subtle hover:border-brand-orange text-white transition-colors" aria-label="Buka Keranjang Belanja">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <span id="cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-brand-orange text-white text-xs font-bold flex items-center justify-center">0</span>
+          </button>
+
+          <button id="mobile-menu-btn" type="button" class="md:hidden inline-flex items-center justify-center p-2.5 rounded-xl bg-brand-elevated border border-brand-subtle text-white" aria-label="Toggle Menu Navigasi" aria-expanded="false">
+            <svg id="menu-icon-open" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="menu-icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-brand-surface border-t border-brand-subtle">
+      <nav class="px-4 pt-3 pb-5 space-y-1.5 text-sm font-medium" aria-label="Navigasi Mobile">
+        <a href="#home" class="mobile-nav-link block px-4 py-3 rounded-xl text-gray-200 hover:bg-brand-elevated hover:text-brand-orange transition-colors">Home</a>
+        <a href="#katalog" class="mobile-nav-link block px-4 py-3 rounded-xl text-gray-200 hover:bg-brand-elevated hover:text-brand-orange transition-colors">Katalog</a>
+        <a href="#kategori" class="mobile-nav-link block px-4 py-3 rounded-xl text-gray-200 hover:bg-brand-elevated hover:text-brand-orange transition-colors">Kategori</a>
+        <a href="#tentang" class="mobile-nav-link block px-4 py-3 rounded-xl text-gray-200 hover:bg-brand-elevated hover:text-brand-orange transition-colors">Tentang Kami</a>
+        <a href="#kontak" class="mobile-nav-link block px-4 py-3 rounded-xl text-gray-200 hover:bg-brand-elevated hover:text-brand-orange transition-colors">Kontak</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <!-- ==================== 2. HERO SECTION ==================== -->
+    <section id="home" class="relative overflow-hidden hero-glow pt-10 pb-16 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28 border-b border-brand-subtle">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <!-- Hero Copy -->
+          <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-surface border border-brand-subtle text-xs font-semibold uppercase tracking-wider text-gray-300">
+              <span class="w-2 h-2 rounded-full bg-brand-orange"></span>
+              <span>Koleksi Baru 2026 • Pria &amp; Wanita</span>
+            </div>
+
+            <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-white">
+              STEP INTO <span class="text-brand-orange">YOUR STYLE</span>
+            </h1>
+
+            <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              Temukan perpaduan sempurna antara desain minimalis modern, bantalan ergonomis, dan material premium. Dirancang untuk menemani setiap langkah aktif Anda sepanjang hari.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
+              <a href="#katalog" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-brand-orange text-white font-semibold text-sm sm:text-base shadow-lg transition-all transform hover:-translate-y-0.5">
+                Belanja Sekarang
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </a>
+              <a href="#kategori" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-white text-black font-semibold text-sm sm:text-base hover:bg-gray-200 transition-colors">
+                Lihat Kategori
+              </a>
+            </div>
+
+            <!-- Trust Micro-Badges -->
+            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-brand-subtle max-w-md mx-auto lg:mx-0">
+              <div>
+                <p class="font-display font-bold text-xl sm:text-2xl text-white">100%</p>
+                <p class="text-xs text-gray-400">Original &amp; Garansi</p>
+              </div>
+              <div>
+                <p class="font-display font-bold text-xl sm:text-2xl text-white">38–45</p>
+                <p class="text-xs text-gray-400">Ukuran Lengkap</p>
+              </div>
+              <div>
+                <p class="font-display font-bold text-xl sm:text-2xl text-brand-orange">4.9★</p>
+                <p class="text-xs text-gray-400">5.000+ Pembeli</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Visual -->
+          <div class="lg:col-span-6 relative">
+            <div class="relative rounded-3xl overflow-hidden bg-brand-surface border border-brand-subtle shadow-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1100&q=85"
+                alt="OWEN SHOES Koleksi Sneaker Premium"
+                class="w-full h-72 sm:h-96 lg:h-[460px] object-cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/900x600/1A1A1A/FF6B00?text=OWEN+SHOES';"
+              >
+              <!-- Floating Highlight Tag -->
+              <div class="absolute bottom-4 left-4 right-4 sm:right-auto sm:w-72 p-4 rounded-2xl bg-black bg-opacity-80 border border-brand-subtle backdrop-filter backdrop-blur-md">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-orange">Edisi Terlaris</span>
+                    <p class="font-display font-bold text-white text-sm mt-0.5">Owen Apex Runner X1</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-xs text-gray-400 line-through">Rp 1.299.000</p>
+                    <p class="font-bold text-white text-sm">Rp 949.000</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. HIGHLIGHT SHOWCASE (UNGGULAN / TERBARU / TERLARIS) ==================== -->
+    <section id="highlight" class="py-14 sm:py-20 bg-brand-black border-b border-brand-subtle">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-brand-orange">Pilihan Kurasi</span>
+            <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white mt-1">Koleksi Sorotan OWEN</h2>
+          </div>
+
+          <!-- Interactive Highlight Tabs -->
+          <div class="inline-flex p-1.5 rounded-2xl bg-brand-surface border border-brand-subtle self-start md:self-auto" role="tablist" aria-label="Tab Koleksi Sorotan">
+            <button type="button" data-highlight-tab="Unggulan" class="highlight-tab pill-active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all" role="tab" aria-selected="true">Produk Unggulan</button>
+            <button type="button" data-highlight-tab="Terbaru" class="highlight-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-300 hover:text-white transition-all" role="tab" aria-selected="false">Produk Terbaru</button>
+            <button type="button" data-highlight-tab="Terlaris" class="highlight-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-300 hover:text-white transition-all" role="tab" aria-selected="false">Produk Terlaris</button>
+          </div>
+        </div>
+
+        <!-- Highlight Grid (Rendered Safely via DOM API) -->
+        <div id="highlight-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. CATEGORY SECTION ==================== -->
+    <section id="kategori" class="py-14 sm:py-20 bg-brand-surface border-b border-brand-subtle">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-orange">Eksplorasi Gaya</span>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white mt-1">Belanja Berdasarkan Kategori</h2>
+          <p class="text-gray-400 text-sm sm:text-base mt-2">Pilih kategori sepatu favorit Anda untuk menyaring katalog secara instan.</p>
+        </div>
+
+        <!-- Category Cards Container (Rendered Safely via DOM API) -->
+        <div id="category-cards-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. PRODUCT CATALOG SECTION ==================== -->
+    <section id="katalog" class="py-14 sm:py-20 bg-brand-black border-b border-brand-subtle">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header & Result Counter -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-brand-orange">Katalog Lengkap</span>
+            <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white mt-1">Koleksi Sepatu OWEN SHOES</h2>
+          </div>
+          <p id="catalog-count" class="text-sm text-gray-400">Menampilkan 10 produk</p>
+        </div>
+
+        <!-- Search & Filter Toolbar -->
+        <div class="bg-brand-surface border border-brand-subtle rounded-2xl p-4 sm:p-5 mb-8 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <!-- Live Search Input -->
+            <div class="md:col-span-6 relative">
+              <label for="search-input" class="sr-only">Cari nama sepatu</label>
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"></path>
+                </svg>
+              </span>
+              <input
+                id="search-input"
+                type="search"
+                maxlength="60"
+                placeholder="Cari nama sepatu (misal: Apex, Derby, Slip-On)..."
+                class="w-full pl-11 pr-4 py-3 rounded-xl bg-brand-elevated border border-brand-subtle text-white placeholder-gray-400 text-sm focus:border-brand-orange"
+              >
+            </div>
+
+            <!-- Category Select -->
+            <div class="md:col-span-3">
+              <label for="category-select" class="sr-only">Filter Kategori</label>
+              <select id="category-select" class="w-full px-4 py-3 rounded-xl bg-brand-elevated border border-brand-subtle text-white text-sm">
+                <option value="Semua">Semua Kategori</option>
+                <option value="Sneakers">Sneakers</option>
+                <option value="Running Shoes">Running Shoes</option>
+                <option value="Casual Shoes">Casual Shoes</option>
+                <option value="Slip-On">Slip-On</option>
+                <option value="Formal Shoes">Formal Shoes</option>
+              </select>
+            </div>
+
+            <!-- Price Range Select -->
+            <div class="md:col-span-3">
+              <label for="price-select" class="sr-only">Filter Rentang Harga</label>
+              <select id="price-select" class="w-full px-4 py-3 rounded-xl bg-brand-elevated border border-brand-subtle text-white text-sm">
+                <option value="all">Semua Harga</option>
+                <option value="under500">&lt; Rp 500.000</option>
+                <option value="500to1000">Rp 500.000 - Rp 1.000.000</option>
+                <option value="over1000">&gt; Rp 1.000.000</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Category Pills -->
+          <div id="catalog-category-pills" class="flex flex-wrap items-center gap-2 pt-1"></div>
+        </div>
+
+        <!-- Product Grid (Rendered Safely via DOM API) -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+        <!-- Empty State -->
+        <div id="empty-catalog" class="hidden text-center py-16 px-4 rounded-2xl bg-brand-surface border border-brand-subtle">
+          <p class="font-display font-bold text-xl text-white">Sepatu tidak ditemukan</p>
+          <p class="text-gray-400 text-sm mt-2">Coba ubah kata kunci pencarian atau reset filter kategori dan harga Anda.</p>
+          <button id="reset-filter-btn" type="button" class="mt-5 px-6 py-2.5 rounded-xl bg-brand-orange text-white text-sm font-semibold">Reset Filter</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. TENTANG KAMI SECTION ==================== -->
+    <section id="tentang" class="py-14 sm:py-20 bg-white text-black border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-5">
+            <div class="rounded-3xl overflow-hidden shadow-xl border border-gray-200">
+              <img
+                src="https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=900&q=85"
+                alt="Kualitas Material dan Craftsmanship OWEN SHOES"
+                class="w-full h-72 sm:h-96 object-cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/800x600/111111/FFFFFF?text=OWEN+CRAFT';"
+              >
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 space-y-5">
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-brand-orange">Tentang OWEN SHOES</span>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-gray-900 leading-tight">
+              Kualitas Premium untuk Setiap Langkah Modern Anda
+            </h2>
+            <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+              Lahir dari semangat menghadirkan alas kaki bergaya modern tanpa mengorbankan kenyamanan, <strong>OWEN SHOES</strong> memadukan siluet minimalis, sol responsif ringan, dan material pilihan kelas atas. Baik untuk lari pagi, nongkrong santai, hingga acara formal penting, setiap pasang sepatu kami melewati kontrol kualitas ketat.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
+              <div class="p-4 rounded-2xl bg-gray-100 border border-gray-200">
+                <p class="font-display font-extrabold text-2xl text-gray-900">12K+</p>
+                <p class="text-xs text-gray-600 mt-1">Pasang Sepatu Terjual di Seluruh Indonesia</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-gray-100 border border-gray-200">
+                <p class="font-display font-extrabold text-2xl text-brand-orange">30 Hari</p>
+                <p class="text-xs text-gray-600 mt-1">Garansi Tukar Ukuran Tanpa Ribet</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-gray-100 border border-gray-200">
+                <p class="font-display font-extrabold text-2xl text-gray-900">100%</p>
+                <p class="text-xs text-gray-600 mt-1">Insole Ergonomis &amp; Breathable</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. TESTIMONI PELANGGAN ==================== -->
+    <section id="testimoni" class="py-14 sm:py-20 bg-brand-black border-b border-brand-subtle">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-orange">Kata Mereka</span>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white mt-1">Testimoni Pelanggan Setia</h2>
+          <p class="text-gray-400 text-sm sm:text-base mt-2">Ulasan nyata dari pelanggan yang telah merasakan kenyamanan sepatu OWEN SHOES.</p>
+        </div>
+
+        <!-- Testimonials Grid (Rendered Safely via DOM API) -->
+        <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 8. FOOTER & KONTAK ==================== -->
+  <footer id="kontak" class="bg-brand-surface text-gray-300 pt-14 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-brand-subtle">
+        <!-- Brand Info -->
+        <div class="space-y-4">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-9 h-9 rounded-xl bg-brand-orange flex items-center justify-center font-display font-extrabold text-white text-lg">O</span>
+            <span class="font-display font-extrabold text-xl text-white">OWEN <span class="text-brand-orange">SHOES</span></span>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            Premium Footwear Store pilihan generasi modern Indonesia. Menghadirkan sneakers, running, casual, slip-on, dan formal shoes berkualitas tinggi.
+          </p>
+        </div>
+
+        <!-- Navigasi Cepat -->
+        <div>
+          <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Navigasi</h3>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="#home" class="hover:text-brand-orange transition-colors">Home</a></li>
+            <li><a href="#katalog" class="hover:text-brand-orange transition-colors">Katalog Produk</a></li>
+            <li><a href="#kategori" class="hover:text-brand-orange transition-colors">Kategori Sepatu</a></li>
+            <li><a href="#tentang" class="hover:text-brand-orange transition-colors">Tentang Kami</a></li>
+          </ul>
+        </div>
+
+        <!-- Alamat & Jam Operasional -->
+        <div>
+          <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Toko &amp; Operasional</h3>
+          <ul class="space-y-2.5 text-sm text-gray-400">
+            <li><strong class="text-white">Alamat:</strong> Jl. Kemang Raya No. 48, Kemang, Jakarta Selatan 12730</li>
+            <li><strong class="text-white">Jam Buka:</strong> Senin – Minggu, 09.00 – 21.00 WIB</li>
+            <li><strong class="text-white">Pengiriman:</strong> Seluruh Indonesia (JNE, J&amp;T, Instant)</li>
+          </ul>
+        </div>
+
+        <!-- Kontak & Media Sosial -->
+        <div>
+          <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Hubungi Kami</h3>
+          <div class="space-y-3 text-sm">
+            <a href="https://wa.me/6281234567890?text=Halo%20OWEN%20SHOES%2C%20saya%20ingin%20bertanya%20tentang%20koleksi%20sepatu." target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 px-4 py-2.5 rounded-xl bg-brand-elevated border border-brand-subtle hover:border-brand-orange text-white transition-colors">
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+              <span>WhatsApp: +62 812-3456-7890</span>
+            </a>
+            <a href="https://instagram.com/owenshoes.id" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 px-4 py-2.5 rounded-xl bg-brand-elevated border border-brand-subtle hover:border-brand-orange text-white transition-colors">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-orange"></span>
+              <span>Instagram: @owenshoes.id</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <p>&copy; 2026 OWEN SHOES – Premium Footwear Store. Seluruh hak cipta dilindungi.</p>
+        <p>Dirancang dengan standar keamanan &amp; performa modern.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 9. PRODUCT DETAIL MODAL ==================== -->
+  <div id="product-modal" class="hidden fixed inset-0 z-50 overflow-y-auto overlay-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="relative w-full max-w-4xl bg-brand-surface border border-brand-subtle rounded-3xl shadow-2xl overflow-hidden my-auto">
+      <!-- Close Button -->
+      <button id="close-product-modal" type="button" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black bg-opacity-70 text-white hover:bg-brand-orange flex items-center justify-center transition-colors" aria-label="Tutup Detail Produk">
+        ✕
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-12">
+        <!-- Product Image -->
+        <div class="md:col-span-6 bg-brand-elevated relative">
+          <img id="modal-image" src="" alt="" class="w-full h-72 sm:h-96 md:h-full object-cover">
+          <span id="modal-badge" class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-orange text-white"></span>
+        </div>
+
+        <!-- Product Info & Selectors -->
+        <div class="md:col-span-6 p-6 sm:p-7 flex flex-col justify-between space-y-5 max-h-[80vh] overflow-y-auto">
+          <div class="space-y-4">
+            <div>
+              <p id="modal-category" class="text-xs font-bold uppercase tracking-widest text-brand-orange"></p>
+              <h3 id="modal-title" class="font-display font-extrabold text-2xl text-white mt-1"></h3>
+            </div>
+
+            <!-- Pricing & Stock -->
+            <div class="flex flex-wrap items-baseline justify-between gap-2 pb-3 border-b border-brand-subtle">
+              <div class="flex items-baseline space-x-2.5">
+                <span id="modal-discount-price" class="font-display font-extrabold text-2xl text-white"></span>
+                <span id="modal-original-price" class="text-sm text-gray-400 line-through"></span>
+              </div>
+              <span id="modal-stock" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-900 bg-opacity-50 text-green-300 border border-green-700"></span>
+            </div>
+
+            <p id="modal-description" class="text-sm text-gray-300 leading-relaxed"></p>
+
+            <!-- Color Selector -->
+            <div>
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="font-semibold uppercase tracking-wider text-gray-400">Pilih Warna</span>
+                <span id="modal-selected-color-label" class="font-semibold text-white"></span>
+              </div>
+              <div id="modal-colors" class="flex items-center space-x-3"></div>
+            </div>
+
+            <!-- Size Selector (38 - 45) -->
+            <div>
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="font-semibold uppercase tracking-wider text-gray-400">Pilih Ukuran (EU)</span>
+                <span id="modal-selected-size-label" class="font-semibold text-brand-orange"></span>
+              </div>
+              <div id="modal-sizes" class="grid grid-cols-4 gap-2"></div>
+            </div>
+
+            <!-- Quantity Selector -->
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Jumlah</span>
+              <div class="inline-flex items-center rounded-xl bg-brand-elevated border border-brand-subtle">
+                <button id="modal-qty-minus" type="button" class="px-3.5 py-2 text-white hover:text-brand-orange font-bold" aria-label="Kurangi jumlah">−</button>
+                <span id="modal-qty-value" class="px-4 py-2 text-sm font-bold text-white min-w-[40px] text-center">1</span>
+                <button id="modal-qty-plus" type="button" class="px-3.5 py-2 text-white hover:text-brand-orange font-bold" aria-label="Tambah jumlah">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <button id="modal-add-cart-btn" type="button" class="w-full py-3.5 px-4 rounded-xl bg-brand-orange text-white font-semibold text-sm shadow-lg transition-colors">
+              Tambah ke Keranjang
+            </button>
+            <button id="modal-buy-wa-btn" type="button" class="w-full py-3.5 px-4 rounded-xl bg-white text-black hover:bg-gray-200 font-semibold text-sm transition-colors">
+              Beli Langsung via WA
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 10. SHOPPING CART DRAWER ==================== -->
+  <div id="cart-drawer" class="hidden fixed inset-0 z-50 overflow-hidden overlay-backdrop" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+    <div class="absolute inset-0 flex justify-end">
+      <div class="relative w-full max-w-md bg-brand-surface border-l border-brand-subtle h-full flex flex-col shadow-2xl">
+        <!-- Drawer Header -->
+        <div class="px-5 py-4 border-b border-brand-subtle flex items-center justify-between">
+          <div>
+            <h3 id="cart-drawer-title" class="font-display font-bold text-lg text-white">Keranjang Belanja</h3>
+            <p id="cart-subtitle" class="text-xs text-gray-400">0 item dipilih</p>
+          </div>
+          <button id="close-cart-btn" type="button" class="w-9 h-9 rounded-xl bg-brand-elevated text-gray-300 hover:text-white flex items-center justify-center" aria-label="Tutup Keranjang">✕</button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+
+        <!-- Cart Footer & WhatsApp Checkout -->
+        <div class="p-5 border-t border-brand-subtle bg-brand-black space-y-4">
+          <!-- Optional Customer Details -->
+          <div class="space-y-2.5">
+            <div>
+              <label for="checkout-name" class="block text-xs font-medium text-gray-400 mb-1">Nama Penerima</label>
+              <input id="checkout-name" type="text" maxlength="60" placeholder="Contoh: Budi Santoso" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-surface border border-brand-subtle text-white text-sm placeholder-gray-500">
+            </div>
+            <div>
+              <label for="checkout-address" class="block text-xs font-medium text-gray-400 mb-1">Alamat Pengiriman</label>
+              <input id="checkout-address" type="text" maxlength="160" placeholder="Contoh: Jl. Sudirman No. 10, Jakarta" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-surface border border-brand-subtle text-white text-sm placeholder-gray-500">
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-sm text-gray-400">Total Pembayaran</span>
+            <span id="cart-total-price" class="font-display font-extrabold text-xl text-white">Rp 0</span>
+          </div>
+
+          <div class="grid grid-cols-1 gap-2.5">
+            <button id="checkout-wa-btn" type="button" class="w-full py-3.5 px-4 rounded-xl bg-brand-orange text-white font-bold text-sm shadow-lg transition-colors">
+              Checkout via WhatsApp
+            </button>
+            <button id="clear-cart-btn" type="button" class="w-full py-2.5 px-4 rounded-xl bg-brand-elevated text-gray-300 hover:text-white text-xs font-semibold transition-colors">
+              Kosongkan Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 11. TOAST NOTIFICATION CONTAINER ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2.5 max-w-xs sm:max-w-sm pointer-events-none" aria-live="polite"></div>
+
+  <!-- ==================== JAVASCRIPT APPLICATION LOGIC (ANTI-XSS & MODULAR) ==================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------------------------------------------------------
+         1. KONSTANTA & DATA PRODUK REALISTIS (10 PRODUK, 5 KATEGORI)
+         --------------------------------------------------------- */
+      const CART_STORAGE_KEY = 'owen_shoes_cart';
+      const WA_PHONE_NUMBER = '6281234567890';
+      const ALL_SIZES = [38, 39, 40, 41, 42, 43, 44, 45];
+
+      const CATEGORIES = [
+        { name: 'Semua', desc: 'Seluruh koleksi', icon: '✦' },
+        { name: 'Sneakers', desc: 'Gaya urban harian', icon: '⚡' },
+        { name: 'Running Shoes', desc: 'Ringan & responsif', icon: '🏃' },
+        { name: 'Casual Shoes', desc: 'Santai & fleksibel', icon: '👟' },
+        { name: 'Slip-On', desc: 'Praktis tanpa tali', icon: '✓' },
+        { name: 'Formal Shoes', desc: 'Elegan & berkelas', icon: '◆' }
+      ];
+
+      const PRODUCTS = [
+        {
+          id: 'owen-01',
+          name: 'Owen Apex Runner X1',
+          category: 'Running Shoes',
+          badge: 'Terlaris',
+          originalPrice: 1299000,
+          discountPrice: 949000,
+          stock: 18,
+          image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+          description: 'Sepatu lari berperforma tinggi dengan upper engineered mesh super breathable dan midsole dual-density foam yang meredam benturan maksimal di berbagai lintasan.',
+          colors: [
+            { name: 'Oranye Volt', hex: '#FF6B00' },
+            { name: 'Hitam Karbon', hex: '#18181B' },
+            { name: 'Putih Awan', hex: '#F4F4F5' }
+          ]
+        },
+        {
+          id: 'owen-02',
+          name: 'Owen Stride Pro 2.0',
+          category: 'Running Shoes',
+          badge: 'Terbaru',
+          originalPrice: 1450000,
+          discountPrice: 1150000,
+          stock: 12,
+          image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80',
+          description: 'Dirancang untuk pelari jarak menengah hingga maraton. Dilengkapi outsole karet anti-slip dan bantalan responsif yang mengembalikan energi pada setiap tolakan.',
+          colors: [
+            { name: 'Abu Titanium', hex: '#52525B' },
+            { name: 'Hitam Pekat', hex: '#111111' },
+            { name: 'Biru Laut', hex: '#1D4ED8' }
+          ]
+        },
+        {
+          id: 'owen-03',
+          name: 'Owen Urban Pulse Low',
+          category: 'Sneakers',
+          badge: 'Unggulan',
+          originalPrice: 999000,
+          discountPrice: 749000,
+          stock: 25,
+          image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80',
+          description: 'Sneakers low-top minimalis berbahan kulit sintetis premium yang mudah dipadukan dengan jeans, chino, maupun outfit streetwear modern.',
+          colors: [
+            { name: 'Putih Bersih', hex: '#FFFFFF' },
+            { name: 'Hitam Monokrom', hex: '#111111' },
+            { name: 'Krem Pasir', hex: '#D6C7B2' }
+          ]
+        },
+        {
+          id: 'owen-04',
+          name: 'Owen Street Core High',
+          category: 'Sneakers',
+          badge: 'Terlaris',
+          originalPrice: 1199000,
+          discountPrice: 899000,
+          stock: 14,
+          image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80',
+          description: 'Siluet high-top ikonik dengan penyangga pergelangan kaki empuk dan detail jahitan presisi. Memberikan pernyataan gaya berani bagi pecinta fashion urban.',
+          colors: [
+            { name: 'Hitam Oranye', hex: '#FF6B00' },
+            { name: 'Hitam Matte', hex: '#27272A' }
+          ]
+        },
+        {
+          id: 'owen-05',
+          name: 'Owen Aero Canvas Daily',
+          category: 'Casual Shoes',
+          badge: 'Terbaru',
+          originalPrice: 599000,
+          discountPrice: 429000,
+          stock: 30,
+          image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80',
+          description: 'Sepatu kanvas kasual ringan dengan insole memory foam yang nyaman dipakai kuliah, kerja santai, hingga jalan akhir pekan.',
+          colors: [
+            { name: 'Hitam Kanvas', hex: '#1F1F1F' },
+            { name: 'Putih Gading', hex: '#F5F5F4' },
+            { name: 'Hijau Zaitun', hex: '#4D5D53' }
+          ]
+        },
+        {
+          id: 'owen-06',
+          name: 'Owen Classic Suede Loft',
+          category: 'Casual Shoes',
+          badge: 'Unggulan',
+          originalPrice: 849000,
+          discountPrice: 649000,
+          stock: 16,
+          image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80',
+          description: 'Sentuhan tekstur suede halus berpadu outsole gum klasik. Pilihan tepat untuk tampilan smart-casual yang rapi dan tetap santai.',
+          colors: [
+            { name: 'Cokelat Kopi', hex: '#6B4423' },
+            { name: 'Abu Granit', hex: '#71717A' },
+            { name: 'Hitam Suede', hex: '#18181B' }
+          ]
+        },
+        {
+          id: 'owen-07',
+          name: 'Owen Ease Knit Slip-On',
+          category: 'Slip-On',
+          badge: 'Terlaris',
+          originalPrice: 549000,
+          discountPrice: 389000,
+          stock: 22,
+          image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80',
+          description: 'Slip-on berbahan rajut elastis yang mengikuti kontur kaki secara alami. Sangat praktis dipakai tanpa tali dan tetap sejuk sepanjang hari.',
+          colors: [
+            { name: 'Hitam Rajut', hex: '#18181B' },
+            { name: 'Abu Muda', hex: '#A1A1AA' },
+            { name: 'Biru Dongker', hex: '#1E3A5F' }
+          ]
+        },
+        {
+          id: 'owen-08',
+          name: 'Owen Cloud Walk Slip-On',
+          category: 'Slip-On',
+          badge: 'Terbaru',
+          originalPrice: 629000,
+          discountPrice: 469000,
+          stock: 19,
+          image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
+          description: 'Didesain dengan bantalan ekstra empuk untuk mobilitas tinggi dan perjalanan jauh. Ringan, fleksibel, dan tahan lama.',
+          colors: [
+            { name: 'Putih Minimalis', hex: '#F8FAFC' },
+            { name: 'Hitam Matte', hex: '#111111' }
+          ]
+        },
+        {
+          id: 'owen-09',
+          name: 'Owen Sovereign Derby Leather',
+          category: 'Formal Shoes',
+          badge: 'Unggulan',
+          originalPrice: 1599000,
+          discountPrice: 1249000,
+          stock: 10,
+          image: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=800&q=80',
+          description: 'Sepatu formal Derby berbahan kulit full-grain dengan finishing halus dan sol berlapis lembut untuk kenyamanan rapat hingga acara resmi.',
+          colors: [
+            { name: 'Hitam Kulit', hex: '#111111' },
+            { name: 'Cokelat Mahoni', hex: '#5C2E14' }
+          ]
+        },
+        {
+          id: 'owen-10',
+          name: 'Owen Executive Penny Loafer',
+          category: 'Formal Shoes',
+          badge: 'Terbaru',
+          originalPrice: 1399000,
+          discountPrice: 1099000,
+          stock: 9,
+          image: 'https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=800&q=80',
+          description: 'Penny loafer klasik bernuansa modern tanpa tali yang mudah dipakai. Memberikan kesan profesional dan berkelas di kantor maupun pesta formal.',
+          colors: [
+            { name: 'Hitam Mengkilap', hex: '#0F0F0F' },
+            { name: 'Cokelat Espresso', hex: '#4A2C1D' }
+          ]
+        }
+      ];
+
+      const TESTIMONIALS = [
+        {
+          name: 'Raka Pratama',
+          city: 'Jakarta Selatan',
+          rating: 5,
+          product: 'Owen Apex Runner X1',
+          comment: 'Ringan banget dipakai lari 10K, bantalannya empuk dan warna oranye-hitamnya kelihatan mahal. Pengiriman juga super cepat!'
+        },
+        {
+          name: 'Nadia Kusuma',
+          city: 'Bandung',
+          rating: 5,
+          product: 'Owen Urban Pulse Low',
+          comment: 'Suka banget sama desainnya yang bersih dan minimalis. Dipakai seharian jalan di mall kaki tetap adem dan nggak lecet.'
+        },
+        {
+          name: 'Dimas Wijaya',
+          city: 'Surabaya',
+          rating: 5,
+          product: 'Owen Sovereign Derby Leather',
+          comment: 'Kualitas kulitnya rapi, jahitan presisi, dan sol dalamnya empuk banget buat sepatu formal. Cocok buat meeting dan kondangan.'
+        },
+        {
+          name: 'Siti Aulia',
+          city: 'Medan',
+          rating: 5,
+          product: 'Owen Ease Knit Slip-On',
+          comment: 'Praktis banget buat dipakai ngampus dan kerja. Tinggal selop, pas di kaki, dan proses pesan lewat WhatsApp-nya ramah sekali.'
+        }
+      ];
+
+      /* ---------------------------------------------------------
+         2. STATE APLIKASI
+         --------------------------------------------------------- */
+      const state = {
+        searchQuery: '',
+        selectedCategory: 'Semua',
+        selectedPriceRange: 'all',
+        activeHighlightTab: 'Unggulan',
+        cart: [],
+        modalProduct: null,
+        modalSelectedSize: 41,
+        modalSelectedColor: '',
+        modalQuantity: 1
+      };
+
+      /* ---------------------------------------------------------
+         3. UTILITAS KEAMANAN & FORMATTER
+         --------------------------------------------------------- */
+      function formatIDR(amount) {
+        return 'Rp ' + Number(amount || 0).toLocaleString('id-ID');
+      }
+
+      function sanitizeText(str, maxLen) {
+        if (typeof str !== 'string') return '';
+        return str
+          .replace(/[<>]/g, '')
+          .replace(/[\u0000-\u001F\u007F]/g, '')
+          .trim()
+          .slice(0, maxLen || 160);
+      }
+
+      function clearChildren(node) {
+        while (node.firstChild) {
+          node.removeChild(node.firstChild);
+        }
+      }
+
+      function createFallbackImage(src, alt, className) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = alt;
+        img.className = className;
+        img.loading = 'lazy';
+        img.addEventListener('error', function handleImgErr() {
+          img.removeEventListener('error', handleImgErr);
+          img.src = 'https://placehold.co/600x450/1A1A1A/FF6B00?text=OWEN+SHOES';
+        });
+        return img;
+      }
+
+      /* ---------------------------------------------------------
+         4. TOAST NOTIFICATION (PENGGANTI ALERT/CONFIRM)
+         --------------------------------------------------------- */
+      function showToast(message, type) {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        const accentClass = type === 'error'
+          ? 'border-red-500 bg-gray-900 text-white'
+          : 'border-brand-orange bg-brand-surface text-white';
+
+        toast.className = 'toast-enter pointer-events-auto flex items-center space-x-3 px-4 py-3 rounded-2xl border shadow-2xl text-sm ' + accentClass;
+
+        const dot = document.createElement('span');
+        dot.className = 'w-2.5 h-2.5 rounded-full flex-shrink-0 ' + (type === 'error' ? 'bg-red-500' : 'bg-brand-orange');
+
+        const textEl = document.createElement('span');
+        textEl.textContent = message;
+
+        toast.appendChild(dot);
+        toast.appendChild(textEl);
+        container.appendChild(toast);
+
+        setTimeout(function () {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.25s ease';
+          setTimeout(function () {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }, 260);
+        }, 2800);
+      }
+
+      /* ---------------------------------------------------------
+         5. LOCALSTORAGE PERSISTENCE (KERANJANG BELANJA)
+         --------------------------------------------------------- */
+      function loadCart() {
+        try {
+          const raw = localStorage.getItem(CART_STORAGE_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) return [];
+          return parsed.filter(function (item) {
+            return item && typeof item.productId === 'string' && Number(item.qty) > 0;
+          });
+        } catch (err) {
+          return [];
+        }
+      }
+
+      function saveCart() {
+        try {
+          localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.cart));
+        } catch (err) {
+          showToast('Gagal menyimpan keranjang ke penyimpanan lokal.', 'error');
+        }
+      }
+
+      /* ---------------------------------------------------------
+         6. KOMPONEN KARTU PRODUK (100% DOM API / ANTI-XSS)
+         --------------------------------------------------------- */
+      function buildProductCard(product) {
+        const card = document.createElement('article');
+        card.className = 'shoe-card rounded-2xl overflow-hidden flex flex-col justify-between cursor-pointer';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', 'Lihat detail ' + product.name);
+
+        // Image Wrapper
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'relative h-56 bg-brand-elevated overflow-hidden';
+
+        const img = createFallbackImage(product.image, product.name, 'w-full h-full object-cover');
+        imgWrap.appendChild(img);
+
+        // Badge
+        const badge = document.createElement('span');
+        let badgeStyle = 'bg-brand-orange text-white';
+        if (product.badge === 'Terbaru') badgeStyle = 'bg-white text-black';
+        if (product.badge === 'Unggulan') badgeStyle = 'bg-black bg-opacity-80 text-brand-orange border border-brand-orange';
+        badge.className = 'absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ' + badgeStyle;
+        badge.textContent = product.badge;
+        imgWrap.appendChild(badge);
+
+        // Discount percentage tag
+        const discountPct = Math.round(((product.originalPrice - product.discountPrice) / product.originalPrice) * 100);
+        const pctTag = document.createElement('span');
+        pctTag.className = 'absolute top-3 right-3 px-2 py-1 rounded-lg bg-black bg-opacity-75 text-white text-xs font-semibold';
+        pctTag.textContent = '-' + discountPct + '%';
+        imgWrap.appendChild(pctTag);
+
+        card.appendChild(imgWrap);
+
+        // Body Content
+        const body = document.createElement('div');
+        body.className = 'p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3';
+
+        const topInfo = document.createElement('div');
+
+        const catLabel = document.createElement('p');
+        catLabel.className = 'text-xs font-semibold uppercase tracking-wider text-gray-400';
+        catLabel.textContent = product.category;
+
+        const title = document.createElement('h3');
+        title.className = 'font-display font-bold text-base sm:text-lg text-white mt-1 leading-snug';
+        title.textContent = product.name;
+
+        // Mini color dots preview
+        const colorRow = document.createElement('div');
+        colorRow.className = 'flex items-center space-x-1.5 mt-2.5';
+        product.colors.forEach(function (c) {
+          const dot = document.createElement('span');
+          dot.className = 'w-3.5 h-3.5 rounded-full border border-gray-500 inline-block';
+          dot.style.backgroundColor = c.hex;
+          dot.title = c.name;
+          colorRow.appendChild(dot);
+        });
+
+        topInfo.appendChild(catLabel);
+        topInfo.appendChild(title);
+        topInfo.appendChild(colorRow);
+
+        // Price & CTA
+        const bottomInfo = document.createElement('div');
+        bottomInfo.className = 'pt-3 border-t border-brand-subtle flex items-end justify-between gap-2';
+
+        const priceBox = document.createElement('div');
+        const origPrice = document.createElement('p');
+        origPrice.className = 'text-xs text-gray-500 line-through';
+        origPrice.textContent = formatIDR(product.originalPrice);
+
+        const discPrice = document.createElement('p');
+        discPrice.className = 'font-display font-extrabold text-base sm:text-lg text-white';
+        discPrice.textContent = formatIDR(product.discountPrice);
+
+        priceBox.appendChild(origPrice);
+        priceBox.appendChild(discPrice);
+
+        const detailBtn = document.createElement('button');
+        detailBtn.type = 'button';
+        detailBtn.className = 'px-3.5 py-2 rounded-xl bg-brand-elevated hover:bg-brand-orange text-white text-xs font-semibold transition-colors';
+        detailBtn.textContent = 'Lihat Detail';
+        detailBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          openProductModal(product);
+        });
+
+        bottomInfo.appendChild(priceBox);
+        bottomInfo.appendChild(detailBtn);
+
+        body.appendChild(topInfo);
+        body.appendChild(bottomInfo);
+        card.appendChild(body);
+
+        // Open modal on card click or Enter key
+        card.addEventListener('click', function () {
+          openProductModal(product);
+        });
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProductModal(product);
+          }
+        });
+
+        return card;
+      }
+
+      /* ---------------------------------------------------------
+         7. RENDER HIGHLIGHT SHOWCASE
+         --------------------------------------------------------- */
+      function renderHighlights() {
+        const grid = document.getElementById('highlight-grid');
+        if (!grid) return;
+        clearChildren(grid);
+
+        const filtered = PRODUCTS.filter(function (p) {
+          return p.badge === state.activeHighlightTab;
+        }).slice(0, 3);
+
+        filtered.forEach(function (product) {
+          grid.appendChild(buildProductCard(product));
+        });
+
+        // Update tab styles
+        const tabs = document.querySelectorAll('.highlight-tab');
+        tabs.forEach(function (tab) {
+          const isMatch = tab.getAttribute('data-highlight-tab') === state.activeHighlightTab;
+          tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+          if (isMatch) {
+            tab.classList.add('pill-active');
+            tab.classList.remove('text-gray-300');
+          } else {
+            tab.classList.remove('pill-active');
+            tab.classList.add('text-gray-300');
+          }
+        });
+      }
+
+      /* ---------------------------------------------------------
+         8. RENDER KATEGORI & PILLS
+         --------------------------------------------------------- */
+      function renderCategorySection() {
+        const grid = document.getElementById('category-cards-grid');
+        if (!grid) return;
+        clearChildren(grid);
+
+        CATEGORIES.forEach(function (cat) {
+          const count = cat.name === 'Semua'
+            ? PRODUCTS.length
+            : PRODUCTS.filter(function (p) { return p.category === cat.name; }).length;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const isActive = state.selectedCategory === cat.name;
+          btn.className = 'text-left p-4 sm:p-5 rounded-2xl border transition-all flex flex-col justify-between ' +
+            (isActive
+              ? 'bg-brand-orange border-brand-orange text-white shadow-lg'
+              : 'bg-brand-black border-brand-subtle hover:border-brand-orange text-white');
+
+          const iconSpan = document.createElement('span');
+          iconSpan.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4 ' +
+            (isActive ? 'bg-black bg-opacity-20 text-white' : 'bg-brand-elevated text-brand-orange');
+          iconSpan.textContent = cat.icon;
+
+          const nameEl = document.createElement('p');
+          nameEl.className = 'font-display font-bold text-sm sm:text-base';
+          nameEl.textContent = cat.name;
+
+          const subEl = document.createElement('p');
+          subEl.className = 'text-xs mt-1 ' + (isActive ? 'text-white opacity-90' : 'text-gray-400');
+          subEl.textContent = count + ' Produk • ' + cat.desc;
+
+          btn.appendChild(iconSpan);
+          btn.appendChild(nameEl);
+          btn.appendChild(subEl);
+
+          btn.addEventListener('click', function () {
+            state.selectedCategory = cat.name;
+            const catSelect = document.getElementById('category-select');
+            if (catSelect) catSelect.value = cat.name;
+            renderCategorySection();
+            renderCatalogPills();
+            renderCatalog();
+            const catalogEl = document.getElementById('katalog');
+            if (catalogEl) catalogEl.scrollIntoView({ behavior: 'smooth' });
+          });
+
+          grid.appendChild(btn);
+        });
+      }
+
+      function renderCatalogPills() {
+        const container = document.getElementById('catalog-category-pills');
+        if (!container) return;
+        clearChildren(container);
+
+        CATEGORIES.forEach(function (cat) {
+          const pill = document.createElement('button');
+          pill.type = 'button';
+          const isActive = state.selectedCategory === cat.name;
+          pill.className = 'px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-colors ' +
+            (isActive
+              ? 'pill-active'
+              : 'bg-brand-elevated border-brand-subtle text-gray-300 hover:border-brand-orange hover:text-white');
+          pill.textContent = cat.name;
+
+          pill.addEventListener('click', function () {
+            state.selectedCategory = cat.name;
+            const catSelect = document.getElementById('category-select');
+            if (catSelect) catSelect.value = cat.name;
+            renderCategorySection();
+            renderCatalogPills();
+            renderCatalog();
+          });
+
+          container.appendChild(pill);
+        });
+      }
+
+      /* ---------------------------------------------------------
+         9. RENDER KATALOG PRODUK (SEARCH + CATEGORY + PRICE FILTER)
+         --------------------------------------------------------- */
+      function renderCatalog() {
+        const grid = document.getElementById('product-grid');
+        const emptyEl = document.getElementById('empty-catalog');
+        const countEl = document.getElementById('catalog-count');
+        if (!grid || !emptyEl || !countEl) return;
+
+        clearChildren(grid);
+
+        const query = state.searchQuery.toLowerCase().trim();
+
+        const filtered = PRODUCTS.filter(function (product) {
+          const matchesSearch = !query || product.name.toLowerCase().includes(query) || product.category.toLowerCase().includes(query);
+          const matchesCategory = state.selectedCategory === 'Semua' || product.category === state.selectedCategory;
+
+          let matchesPrice = true;
+          if (state.selectedPriceRange === 'under500') {
+            matchesPrice = product.discountPrice < 500000;
+          } else if (state.selectedPriceRange === '500to1000') {
+            matchesPrice = product.discountPrice >= 500000 && product.discountPrice <= 1000000;
+          } else if (state.selectedPriceRange === 'over1000') {
+            matchesPrice = product.discountPrice > 1000000;
+          }
+
+          return matchesSearch && matchesCategory && matchesPrice;
+        });
+
+        countEl.textContent = 'Menampilkan ' + filtered.length + ' dari ' + PRODUCTS.length + ' produk';
+
+        if (filtered.length === 0) {
+          grid.classList.add('hidden');
+          emptyEl.classList.remove('hidden');
+        } else {
+          grid.classList.remove('hidden');
+          emptyEl.classList.add('hidden');
+          filtered.forEach(function (product) {
+            grid.appendChild(buildProductCard(product));
+          });
+        }
+      }
+
+      /* ---------------------------------------------------------
+         10. RENDER TESTIMONI PELANGGAN
+         --------------------------------------------------------- */
+      function renderTestimonials() {
+        const grid = document.getElementById('testimonials-grid');
+        if (!grid) return;
+        clearChildren(grid);
+
+        TESTIMONIALS.forEach(function (item) {
+          const card = document.createElement('article');
+          card.className = 'p-6 rounded-2xl bg-brand-surface border border-brand-subtle flex flex-col justify-between space-y-4';
+
+          const top = document.createElement('div');
+          top.className = 'space-y-3';
+
+          const stars = document.createElement('div');
+          stars.className = 'text-brand-orange text-sm tracking-widest';
+          stars.textContent = '★★★★★';
+
+          const comment = document.createElement('p');
+          comment.className = 'text-sm text-gray-300 leading-relaxed';
+          comment.textContent = '"' + item.comment + '"';
+
+          top.appendChild(stars);
+          top.appendChild(comment);
+
+          const bottom = document.createElement('div');
+          bottom.className = 'pt-4 border-t border-brand-subtle';
+
+          const nameRow = document.createElement('div');
+          nameRow.className = 'flex items-center justify-between gap-2';
+
+          const author = document.createElement('p');
+          author.className = 'font-display font-bold text-sm text-white';
+          author.textContent = item.name;
+
+          const verified = document.createElement('span');
+          verified.className = 'text-xs px-2 py-0.5 rounded-full bg-green-900 bg-opacity-50 text-green-300';
+          verified.textContent = '✓ Terverifikasi';
+
+          nameRow.appendChild(author);
+          nameRow.appendChild(verified);
+
+          const meta = document.createElement('p');
+          meta.className = 'text-xs text-gray-400 mt-1';
+          meta.textContent = item.city + ' • ' + item.product;
+
+          bottom.appendChild(nameRow);
+          bottom.appendChild(meta);
+
+          card.appendChild(top);
+          card.appendChild(bottom);
+          grid.appendChild(card);
+        });
+      }
+
+      /* ---------------------------------------------------------
+         11. MODAL DETAIL PRODUK
+         --------------------------------------------------------- */
+      function openProductModal(product) {
+        state.modalProduct = product;
+        state.modalSelectedSize = 41;
+        state.modalSelectedColor = product.colors[0].name;
+        state.modalQuantity = 1;
+
+        const modal = document.getElementById('product-modal');
+        const img = document.getElementById('modal-image');
+        img.src = product.image;
+        img.alt = product.name;
+        img.onerror = function () {
+          img.src = 'https://placehold.co/800x600/1A1A1A/FF6B00?text=OWEN+SHOES';
+        };
+
+        document.getElementById('modal-badge').textContent = product.badge;
+        document.getElementById('modal-category').textContent = product.category;
+        document.getElementById('modal-title').textContent = product.name;
+        document.getElementById('modal-discount-price').textContent = formatIDR(product.discountPrice);
+        document.getElementById('modal-original-price').textContent = formatIDR(product.originalPrice);
+        document.getElementById('modal-stock').textContent = 'Stok Tersedia (' + product.stock + ' pasang)';
+        document.getElementById('modal-description').textContent = product.description;
+        document.getElementById('modal-qty-value').textContent = String(state.modalQuantity);
+
+        renderModalColors();
+        renderModalSizes();
+
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeProductModal() {
+        const modal = document.getElementById('product-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      function renderModalColors() {
+        const container = document.getElementById('modal-colors');
+        const label = document.getElementById('modal-selected-color-label');
+        if (!container || !state.modalProduct) return;
+        clearChildren(container);
+
+        label.textContent = state.modalSelectedColor;
+
+        state.modalProduct.colors.forEach(function (colorObj) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'color-swatch w-8 h-8 rounded-full border border-gray-500 ' +
+            (state.modalSelectedColor === colorObj.name ? 'selected' : '');
+          btn.style.backgroundColor = colorObj.hex;
+          btn.setAttribute('aria-label', 'Pilih warna ' + colorObj.name);
+          btn.title = colorObj.name;
+
+          btn.addEventListener('click', function () {
+            state.modalSelectedColor = colorObj.name;
+            renderModalColors();
+          });
+
+          container.appendChild(btn);
+        });
+      }
+
+      function renderModalSizes() {
+        const container = document.getElementById('modal-sizes');
+        const label = document.getElementById('modal-selected-size-label');
+        if (!container) return;
+        clearChildren(container);
+
+        label.textContent = 'Ukuran ' + state.modalSelectedSize;
+
+        ALL_SIZES.forEach(function (size) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'size-btn py-2.5 rounded-xl text-sm font-medium ' +
+            (state.modalSelectedSize === size ? 'selected' : '');
+          btn.textContent = String(size);
+
+          btn.addEventListener('click', function () {
+            state.modalSelectedSize = size;
+            renderModalSizes();
+          });
+
+          container.appendChild(btn);
+        });
+      }
+
+      /* ---------------------------------------------------------
+         12. LOGIKA KERANJANG & CHECKOUT WHATSAPP
+         --------------------------------------------------------- */
+      function addToCart(product, size, color, qty) {
+        const existing = state.cart.find(function (item) {
+          return item.productId === product.id && item.size === size && item.color === color;
+        });
+
+        if (existing) {
+          existing.qty = Math.min(product.stock, existing.qty + qty);
+        } else {
+          state.cart.push({
+            productId: product.id,
+            name: product.name,
+            price: product.discountPrice,
+            image: product.image,
+            size: size,
+            color: color,
+            qty: qty
+          });
+        }
+
+        saveCart();
+        updateCartUI();
+        showToast(product.name + ' (Uk. ' + size + ') ditambahkan ke keranjang.');
+      }
+
+      function updateCartQuantity(index, delta) {
+        const item = state.cart[index];
+        if (!item) return;
+
+        const nextQty = item.qty + delta;
+        if (nextQty <= 0) {
+          state.cart.splice(index, 1);
+          showToast('Produk dihapus dari keranjang.');
+        } else {
+          item.qty = Math.min(20, nextQty);
+        }
+        saveCart();
+        updateCartUI();
+      }
+
+      function removeCartItem(index) {
+        if (!state.cart[index]) return;
+        const removedName = state.cart[index].name;
+        state.cart.splice(index, 1);
+        saveCart();
+        updateCartUI();
+        showToast(removedName + ' dihapus dari keranjang.');
+      }
+
+      function updateCartUI() {
+        const badge = document.getElementById('cart-badge');
+        const subtitle = document.getElementById('cart-subtitle');
+        const container = document.getElementById('cart-items-container');
+        const totalEl = document.getElementById('cart-total-price');
+
+        const totalQty = state.cart.reduce(function (acc, item) { return acc + item.qty; }, 0);
+        const totalPrice = state.cart.reduce(function (acc, item) { return acc + (item.price * item.qty); }, 0);
+
+        badge.textContent = String(totalQty);
+        subtitle.textContent = totalQty + ' item dipilih';
+        totalEl.textContent = formatIDR(totalPrice);
+
+        clearChildren(container);
+
+        if (state.cart.length === 0) {
+          const emptyBox = document.createElement('div');
+          emptyBox.className = 'text-center py-14 px-4 space-y-2';
+
+          const emptyTitle = document.createElement('p');
+          emptyTitle.className = 'font-display font-bold text-white text-base';
+          emptyTitle.textContent = 'Keranjang masih kosong';
+
+          const emptyDesc = document.createElement('p');
+          emptyDesc.className = 'text-xs text-gray-400';
+          emptyDesc.textContent = 'Pilih sepatu favorit Anda dari katalog untuk mulai berbelanja.';
+
+          emptyBox.appendChild(emptyTitle);
+          emptyBox.appendChild(emptyDesc);
+          container.appendChild(emptyBox);
+          return;
+        }
+
+        state.cart.forEach(function (item, index) {
+          const row = document.createElement('div');
+          row.className = 'flex gap-3.5 p-3.5 rounded-2xl bg-brand-elevated border border-brand-subtle';
+
+          const thumb = createFallbackImage(item.image, item.name, 'w-20 h-20 rounded-xl object-cover flex-shrink-0');
+
+          const info = document.createElement('div');
+          info.className = 'flex-1 min-w-0 flex flex-col justify-between';
+
+          const headerRow = document.createElement('div');
+          headerRow.className = 'flex items-start justify-between gap-2';
+
+          const nameEl = document.createElement('p');
+          nameEl.className = 'font-display font-bold text-sm text-white truncate';
+          nameEl.textContent = item.name;
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'text-xs text-gray-400 hover:text-red-400 px-1';
+          delBtn.setAttribute('aria-label', 'Hapus ' + item.name);
+          delBtn.textContent = '✕';
+          delBtn.addEventListener('click', function () {
+            removeCartItem(index);
+          });
+
+          headerRow.appendChild(nameEl);
+          headerRow.appendChild(delBtn);
+
+          const variantEl = document.createElement('p');
+          variantEl.className = 'text-xs text-gray-400 mt-0.5';
+          variantEl.textContent = 'Ukuran ' + item.size + ' • ' + item.color;
+
+          const bottomRow = document.createElement('div');
+          bottomRow.className = 'flex items-center justify-between mt-2.5';
+
+          const priceEl = document.createElement('p');
+          priceEl.className = 'font-bold text-sm text-brand-orange';
+          priceEl.textContent = formatIDR(item.price * item.qty);
+
+          const qtyControl = document.createElement('div');
+          qtyControl.className = 'inline-flex items-center rounded-lg bg-brand-surface border border-brand-subtle';
+
+          const minusBtn = document.createElement('button');
+          minusBtn.type = 'button';
+          minusBtn.className = 'px-2.5 py-1 text-xs font-bold text-white hover:text-brand-orange';
+          minusBtn.textContent = '−';
+          minusBtn.addEventListener('click', function () {
+            updateCartQuantity(index, -1);
+          });
+
+          const qtyLabel = document.createElement('span');
+          qtyLabel.className = 'px-2 text-xs font-semibold text-white';
+          qtyLabel.textContent = String(item.qty);
+
+          const plusBtn = document.createElement('button');
+          plusBtn.type = 'button';
+          plusBtn.className = 'px-2.5 py-1 text-xs font-bold text-white hover:text-brand-orange';
+          plusBtn.textContent = '+';
+          plusBtn.addEventListener('click', function () {
+            updateCartQuantity(index, 1);
+          });
+
+          qtyControl.appendChild(minusBtn);
+          qtyControl.appendChild(qtyLabel);
+          qtyControl.appendChild(plusBtn);
+
+          bottomRow.appendChild(priceEl);
+          bottomRow.appendChild(qtyControl);
+
+          info.appendChild(headerRow);
+          info.appendChild(variantEl);
+          info.appendChild(bottomRow);
+
+          row.appendChild(thumb);
+          row.appendChild(info);
+          container.appendChild(row);
+        });
+      }
+
+      function buildWhatsAppUrl(items, customerName, customerAddress) {
+        const lines = [];
+        lines.push('Halo OWEN SHOES, saya ingin memesan sepatu berikut:');
+        lines.push('');
+
+        let grandTotal = 0;
+        items.forEach(function (item, idx) {
+          const subtotal = item.price * item.qty;
+          grandTotal += subtotal;
+          lines.push((idx + 1) + '. ' + item.name);
+          lines.push('   - Ukuran: ' + item.size);
+          lines.push('   - Warna: ' + item.color);
+          lines.push('   - Jumlah: ' + item.qty + ' pasang');
+          lines.push('   - Subtotal: ' + formatIDR(subtotal));
+        });
+
+        lines.push('');
+        lines.push('Total Harga: ' + formatIDR(grandTotal));
+
+        if (customerName) {
+          lines.push('Nama Penerima: ' + customerName);
+        }
+        if (customerAddress) {
+          lines.push('Alamat Pengiriman: ' + customerAddress);
+        }
+
+        lines.push('');
+        lines.push('Mohon konfirmasi ketersediaan stok dan ongkos kirim. Terima kasih!');
+
+        return 'https://wa.me/' + WA_PHONE_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+      }
+
+      function openCartDrawer() {
+        document.getElementById('cart-drawer').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeCartDrawer() {
+        document.getElementById('cart-drawer').classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      /* ---------------------------------------------------------
+         13. EVENT LISTENERS & INISIALISASI
+         --------------------------------------------------------- */
+      function bindEvents() {
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
+
+        mobileBtn.addEventListener('click', function () {
+          const isHidden = mobileMenu.classList.contains('hidden');
+          mobileMenu.classList.toggle('hidden');
+          iconOpen.classList.toggle('hidden');
+          iconClose.classList.toggle('hidden');
+          mobileBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+          link.addEventListener('click', function () {
+            mobileMenu.classList.add('hidden');
+            iconOpen.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+            mobileBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+
+        // Highlight Tabs
+        document.querySelectorAll('.highlight-tab').forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            state.activeHighlightTab = tab.getAttribute('data-highlight-tab');
+            renderHighlights();
+          });
+        });
+
+        // Search, Category & Price Filters
+        document.getElementById('search-input').addEventListener('input', function (e) {
+          state.searchQuery = sanitizeText(e.target.value, 60);
+          renderCatalog();
+        });
+
+        document.getElementById('category-select').addEventListener('change', function (e) {
+          state.selectedCategory = e.target.value;
+          renderCategorySection();
+          renderCatalogPills();
+          renderCatalog();
+        });
+
+        document.getElementById('price-select').addEventListener('change', function (e) {
+          state.selectedPriceRange = e.target.value;
+          renderCatalog();
+        });
+
+        document.getElementById('reset-filter-btn').addEventListener('click', function () {
+          state.searchQuery = '';
+          state.selectedCategory = 'Semua';
+          state.selectedPriceRange = 'all';
+          document.getElementById('search-input').value = '';
+          document.getElementById('category-select').value = 'Semua';
+          document.getElementById('price-select').value = 'all';
+          renderCategorySection();
+          renderCatalogPills();
+          renderCatalog();
+        });
+
+        // Product Modal Controls
+        document.getElementById('close-product-modal').addEventListener('click', closeProductModal);
+        document.getElementById('product-modal').addEventListener('click', function (e) {
+          if (e.target === e.currentTarget) closeProductModal();
+        });
+
+        document.getElementById('modal-qty-minus').addEventListener('click', function () {
+          if (state.modalQuantity > 1) {
+            state.modalQuantity -= 1;
+            document.getElementById('modal-qty-value').textContent = String(state.modalQuantity);
+          }
+        });
+
+        document.getElementById('modal-qty-plus').addEventListener('click', function () {
+          const maxStock = state.modalProduct ? state.modalProduct.stock : 10;
+          if (state.modalQuantity < maxStock) {
+            state.modalQuantity += 1;
+            document.getElementById('modal-qty-value').textContent = String(state.modalQuantity);
+          }
+        });
+
+        document.getElementById('modal-add-cart-btn').addEventListener('click', function () {
+          if (!state.modalProduct) return;
+          addToCart(state.modalProduct, state.modalSelectedSize, state.modalSelectedColor, state.modalQuantity);
+          closeProductModal();
+        });
+
+        document.getElementById('modal-buy-wa-btn').addEventListener('click', function () {
+          if (!state.modalProduct) return;
+          const singleItem = [{
+            name: state.modalProduct.name,
+            price: state.modalProduct.discountPrice,
+            size: state.modalSelectedSize,
+            color: state.modalSelectedColor,
+            qty: state.modalQuantity
+          }];
+          const url = buildWhatsAppUrl(singleItem, '', '');
+          window.open(url, '_blank', 'noopener,noreferrer');
+        });
+
+        // Cart Drawer Controls
+        document.getElementById('open-cart-btn').addEventListener('click', openCartDrawer);
+        document.getElementById('close-cart-btn').addEventListener('click', closeCartDrawer);
+        document.getElementById('cart-drawer').addEventListener('click', function (e) {
+          if (e.target === e.currentTarget) closeCartDrawer();
+        });
+
+        document.getElementById('clear-cart-btn').addEventListener('click', function () {
+          if (state.cart.length === 0) {
+            showToast('Keranjang sudah kosong.');
+            return;
+          }
+          state.cart = [];
+          saveCart();
+          updateCartUI();
+          showToast('Keranjang berhasil dikosongkan.');
+        });
+
+        document.getElementById('checkout-wa-btn').addEventListener('click', function () {
+          if (state.cart.length === 0) {
+            showToast('Keranjang Anda masih kosong. Tambahkan produk terlebih dahulu.', 'error');
+            return;
+          }
+          const nameInput = sanitizeText(document.getElementById('checkout-name').value, 60);
+          const addrInput = sanitizeText(document.getElementById('checkout-address').value, 160);
+          const waUrl = buildWhatsAppUrl(state.cart, nameInput, addrInput);
+          window.open(waUrl, '_blank', 'noopener,noreferrer');
+          showToast('Mengarahkan ke WhatsApp untuk menyelesaikan pesanan...');
+        });
+
+        // Escape key to close modals/drawer
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeProductModal();
+            closeCartDrawer();
+          }
+        });
+      }
+
+      // Bootstrap Application
+      document.addEventListener('DOMContentLoaded', function () {
+        state.cart = loadCart();
+        renderHighlights();
+        renderCategorySection();
+        renderCatalogPills();
+        renderCatalog();
+        renderTestimonials();
+        updateCartUI();
+        bindEvents();
+      });
+    })();
+  </script>
+</body>
+</html>
